@@ -51,9 +51,9 @@ public class AsciiMap{
     }
 
     //unpacks i at every possible index, into a 9D vector which finds its closest master vector
-    public void fillMapToClosestChar(int[][] masterVec,char[] charValues){
+    public void fillMapToClosestChar(int[][] masterVec,String charValues){
         for(int i=0; i<instructionLookUp.length; i++){
-            instructionLookUp[i]=charValues[findClosest(unPackVec(i),masterVec)];
+            instructionLookUp[i]=charValues.charAt(findClosest(unPackVec(i),masterVec));
         }
     }
 

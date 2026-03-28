@@ -12,7 +12,7 @@ public class FontToBmp{
     }
 
     public BufferedImage getBmp(String input){
-        BufferedImage bmpOut = new BufferedImage(1130,27,BufferedImage.TYPE_INT_RGB);
+        BufferedImage bmpOut = new BufferedImage(1140,27,BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = bmpOut.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
@@ -39,11 +39,9 @@ public class FontToBmp{
 
     public int[][] getSamples(BufferedImage image){
         int width=fm.charWidth(' ');
-        int height=fm.getAscent();
+        int height=fm.getAscent()+fm.getLeading();
 
         int[][] samples=new int[image.getWidth()/width][9];
-
-        System.out.println(height);
 
 
         for(int i=0; i<samples.length; i++){//each char
@@ -55,7 +53,66 @@ public class FontToBmp{
                     }
                 }
             }
+            //samples[i]=normalizeVector(samples[i]);
+            //samples[i]=normalizeVector(samples[i],getMaxMagnitude(samples));
+            samples[i]=localContrastNormalizeVector(samples[i]);
         }
         return samples;
     }
+
+
+    public int[] normalizeVector(int[] v){
+        double magnitude=0;
+        for(int d:v){
+            magnitude+=Math.pow(d,2);
+        }
+        magnitude=Math.sqrt(magnitude);
+        if(magnitude!=0){
+            for(int i=0; i<9; i++){
+                v[i]=((4*v[i])/(int)magnitude);
+            }
+        }
+        return v;
+    }
+
+    public int[] normalizeVector(int[] v,double magnitude){
+        if(magnitude!=0){
+            for(int i=0; i<9; i++){
+                v[i]=((4*v[i])/(int)magnitude);
+            }
+        }
+        return v;
+    }
+
+
+    public double getMaxMagnitude(int[][] v){
+        int m=0;
+        int n=0;
+        for(int[] vec:v){
+            for(int d:vec){
+                n+=(int)Math.pow(d,2);
+            }
+            if(m<n){
+                m=n;
+            }
+        }
+        return Math.sqrt(m);
+    }
+
+    public int[] localContrastNormalizeVector(int[] v){
+        int min=0;
+        int max=5;
+
+        for(int i=0; i<9; i++){
+            min=(v[i]>min)?min:v[i];
+            max=(v[i]<max)?max:v[i];
+        }
+
+        for(int i=0; i<9; i++){
+            v[i]=(3*(v[i]-min))/(max-min);
+        }
+        return v;
+    }
+
 }
+

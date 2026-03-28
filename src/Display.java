@@ -39,9 +39,12 @@ public class Display{
     }
 
 
-
-
-
-
+    public void loadBuffer(ScreenBuffer buffer){
+        for(int i=0; i<pixelArray.length; i++){
+            for(int j=0; j<pixelArray[i].length; j++){
+                pixelArray[i][j]=buffer.get(i,j);
+            }
+        }
+    }
 
 }
