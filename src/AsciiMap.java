@@ -1,9 +1,13 @@
+import java.awt.image.BufferedImage;
+
 public class AsciiMap{
 
     char[] instructionLookUp = new char[262144];//all possible lookup table inputs
 
-    public AsciiMap(){
-
+    public AsciiMap(String filepath,String asciiChars){
+        FontToBmp ftb = new FontToBmp(filepath);
+        BufferedImage image = ftb.getBmp(asciiChars);
+        fillMapToClosestChar(ftb.getSamples(image),asciiChars);
     }
 
     //packs 9D vectors into an 18-bit int value

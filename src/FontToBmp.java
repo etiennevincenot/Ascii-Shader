@@ -28,7 +28,22 @@ public class FontToBmp{
 
             g2d.setColor(Color.WHITE);
             g2d.drawString(input,0,fm.getAscent()-fm.getDescent());
-
+            /*
+            for(int i=0; i<fm.getAscent()-2; i++){
+                for(int j=0; j<bmpOut.getWidth()/10; j++){
+                    if(bmpOut.getRGB(j,i)==-1){
+                        System.out.print("#");
+                    }else{
+                        System.out.print(" ");
+                    }
+                }
+                System.out.println();
+            }
+            for(int i=0; i<bmpOut.getWidth()/10; i++){
+                System.out.print("@");
+            }
+            System.out.println();
+            */
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -39,7 +54,7 @@ public class FontToBmp{
 
     public int[][] getSamples(BufferedImage image){
         int width=fm.charWidth(' ');
-        int height=fm.getAscent()+fm.getLeading();
+        int height=fm.getAscent()-2;
 
         int[][] samples=new int[image.getWidth()/width][9];
 
